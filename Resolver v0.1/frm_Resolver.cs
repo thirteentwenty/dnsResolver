@@ -38,16 +38,8 @@ namespace dnsResolver
 
             // make sure all fields are filled out properly
 
-            // Original domain patern match, did not accommodate for .us or .co.jp
-            // Regex domainPattern = new Regex("(?:\\/\\/|[a-z]*\\.[a-z]{3}\\.[a-z]{2})([a-z]*\\.[a-z]{3})|([a-z]*\\.[a-z]*\\.[a-z]{3}\\.[a-z]{2})|([a-z]+\\.[a-z]{3})");
-
             Regex domainPattern = new Regex("(?:\\/\\/|[A-Za-z0-9][A-Za-z0-9\\-]{0,61}[A-Za-z0-9]|[A-Za-z0-9])");
             Regex dnsServerPattern = new Regex(@"^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$");
-
-            // Ping DNS server by IP
-            Ping x = new Ping();
-            PingReply reply = x.Send(IPAddress.Parse(nsToQuery));
-            TcpClient tcP = new System.Net.Sockets.TcpClient();
 
             if (string.IsNullOrEmpty(domainToQuery) || !domainPattern.IsMatch(domainToQuery))
             {
@@ -60,76 +52,85 @@ namespace dnsResolver
                 MessageBox.Show("Enter a valid DNS Server");
             }
 
-            else if (reply.Status == IPStatus.TimedOut)
-            {
-                cmb_nsToQuery.SelectAll();
-                MessageBox.Show("The requested name server " + nsToQuery + " timed out.");
-            }
-
             else
             {
-                using (TcpClient tcpClient = new TcpClient())
+                // Ping the DNS server
+                Ping x = new Ping();
+                PingReply reply = x.Send(IPAddress.Parse(nsToQuery));
+                TcpClient tcP = new System.Net.Sockets.TcpClient();
+
+                if (reply.Status == IPStatus.TimedOut)
                 {
-                    try
+                    cmb_nsToQuery.SelectAll();
+                    MessageBox.Show("The requested name server " + nsToQuery + "timed out");
+                }
+
+                else
+                {
+                    using (TcpClient tcpClient = new TcpClient())
                     {
-                        tcpClient.Connect(nsToQuery, 53);
-                        
+                        try
                         {
-                            dgv_nameServers.Rows.Clear();
-                            dgv_nameServers.Refresh();
+                            tcpClient.Connect(nsToQuery, 53);
 
-                            dgv_mailExchanger.Rows.Clear();
-                            dgv_mailExchanger.Refresh();
-
-                            dgv_txtRecords.Rows.Clear();
-                            dgv_txtRecords.Refresh();
-
-                            dgv_address.Rows.Clear();
-                            dgv_address.Refresh();
-
-                            var endpoint = new IPEndPoint(IPAddress.Parse(nsToQuery), 53);
-                            var client = new LookupClient(endpoint);
-
-                            foreach (var aRecord in client.Query(domainToQuery, QueryType.A).Answers.ARecords())
                             {
-                                // MessageBox.Show(aRecord.TimeToLive.ToString());
-                                this.dgv_address.Rows.Add(new object[] { domainToQuery, aRecord.Address.ToString() });
-                            }
+                                dgv_nameServers.Rows.Clear();
+                                dgv_nameServers.Refresh();
 
-                            foreach (var mxRecords in client.Query(domainToQuery, QueryType.MX).Answers.MxRecords())
-                            {
-                                // MessageBox.Show(mxRecords.ToString());
-                                string originalMXServer = mxRecords.Exchange;
-                                string dotlessMXServer = originalMXServer.TrimEnd('.');
-                                this.dgv_mailExchanger.Rows.Add(new object[] { domainToQuery, mxRecords.Preference, dotlessMXServer });
-                            }
+                                dgv_mailExchanger.Rows.Clear();
+                                dgv_mailExchanger.Refresh();
 
-                            foreach (var txtRecords in client.Query(domainToQuery, QueryType.TXT).Answers.TxtRecords())
-                            {
-                                // MessageBox.Show(txtRecords.ToString());
-                                string originalTxtRecordDomain = txtRecords.DomainName.ToString();
-                                string dotlessTxtRecordDomain = originalTxtRecordDomain.TrimEnd('.');
+                                dgv_txtRecords.Rows.Clear();
+                                dgv_txtRecords.Refresh();
 
-                                string completeTxtRecord = txtRecords.ToString();
-                                string[] txtRecordArray = completeTxtRecord.Split('"');
+                                dgv_address.Rows.Clear();
+                                dgv_address.Refresh();
 
-                                this.dgv_txtRecords.Rows.Add(new object[] { dotlessTxtRecordDomain, txtRecordArray[1] });
-                            }
+                                var endpoint = new IPEndPoint(IPAddress.Parse(nsToQuery), 53);
+                                var client = new LookupClient(endpoint);
 
-                            foreach (var nameServers in client.Query(domainToQuery, QueryType.NS).Answers.NsRecords())
-                            {
-                                // MessageBox.Show(nameServers.NSDName.ToString());
-                                string originalNameServer = nameServers.NSDName.ToString();
-                                string dotlessNameServer = originalNameServer.TrimEnd('.');
-                                this.dgv_nameServers.Rows.Add(new object[] { domainToQuery, dotlessNameServer });
+                                foreach (var aRecord in client.Query(domainToQuery, QueryType.A).Answers.ARecords())
+                                {
+                                    // MessageBox.Show(aRecord.TimeToLive.ToString());
+                                    this.dgv_address.Rows.Add(new object[] { domainToQuery, aRecord.Address.ToString(), aRecord.TimeToLive });
+                                }
+
+                                foreach (var mxRecords in client.Query(domainToQuery, QueryType.MX).Answers.MxRecords())
+                                {
+                                    // MessageBox.Show(mxRecords.ToString());
+                                    string originalMXServer = mxRecords.Exchange;
+                                    string dotlessMXServer = originalMXServer.TrimEnd('.');
+                                    this.dgv_mailExchanger.Rows.Add(new object[] { domainToQuery, mxRecords.Preference, dotlessMXServer });
+                                }
+
+                                foreach (var txtRecords in client.Query(domainToQuery, QueryType.TXT).Answers.TxtRecords())
+                                {
+                                    // MessageBox.Show(txtRecords.ToString());
+                                    string originalTxtRecordDomain = txtRecords.DomainName.ToString();
+                                    string dotlessTxtRecordDomain = originalTxtRecordDomain.TrimEnd('.');
+
+                                    string completeTxtRecord = txtRecords.ToString();
+                                    string[] txtRecordArray = completeTxtRecord.Split('"');
+
+                                    this.dgv_txtRecords.Rows.Add(new object[] { dotlessTxtRecordDomain, txtRecordArray[1] });
+                                }
+
+                                foreach (var nameServers in client.Query(domainToQuery, QueryType.NS).Answers.NsRecords())
+                                {
+                                    // MessageBox.Show(nameServers.NSDName.ToString());
+                                    string originalNameServer = nameServers.NSDName.ToString();
+                                    string dotlessNameServer = originalNameServer.TrimEnd('.');
+                                    this.dgv_nameServers.Rows.Add(new object[] { domainToQuery, dotlessNameServer });
+                                }
                             }
                         }
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("The IP " + nsToQuery + " seems not to be a DNS server" + "\n" + "Please check the IP and try again.");
+                        catch (Exception)
+                        {
+                            MessageBox.Show("The IP " + nsToQuery + " seems not to be a DNS server" + "\n" + "Please check the IP and try again.");
+                        }
                     }
                 }
+                
             }
         }
 

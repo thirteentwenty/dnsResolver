@@ -35,6 +35,7 @@
             this.dgv_address = new System.Windows.Forms.DataGridView();
             this.Hostname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TTL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgv_mailExchanger = new System.Windows.Forms.DataGridView();
             this.mailAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.preference = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -91,7 +92,8 @@
             this.dgv_address.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_address.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Hostname,
-            this.IP});
+            this.IP,
+            this.TTL});
             this.dgv_address.Location = new System.Drawing.Point(12, 101);
             this.dgv_address.Name = "dgv_address";
             this.dgv_address.ReadOnly = true;
@@ -103,7 +105,7 @@
             // Hostname
             // 
             this.Hostname.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Hostname.FillWeight = 60.9137F;
+            this.Hostname.FillWeight = 26.96153F;
             this.Hostname.HeaderText = "Hostname";
             this.Hostname.Name = "Hostname";
             this.Hostname.ReadOnly = true;
@@ -111,10 +113,18 @@
             // IP
             // 
             this.IP.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.IP.FillWeight = 139.0863F;
+            this.IP.FillWeight = 39.59127F;
             this.IP.HeaderText = "IP";
             this.IP.Name = "IP";
             this.IP.ReadOnly = true;
+            // 
+            // TTL
+            // 
+            this.TTL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.TTL.FillWeight = 39.67562F;
+            this.TTL.HeaderText = "TTL";
+            this.TTL.Name = "TTL";
+            this.TTL.ReadOnly = true;
             // 
             // dgv_mailExchanger
             // 
@@ -248,6 +258,8 @@
             "8.8.4.4",
             "208.67.222.222",
             "208.67.220.220",
+            "1.1.1.1",
+            "9.9.9.9",
             "- - Enter DNS Server IP - -"});
             this.cmb_nsToQuery.Location = new System.Drawing.Point(155, 47);
             this.cmb_nsToQuery.Name = "cmb_nsToQuery";
@@ -288,10 +300,11 @@
             // 
             // txtRecord
             // 
-            this.txtRecord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.txtRecord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             this.txtRecord.HeaderText = "TXT Record";
             this.txtRecord.Name = "txtRecord";
             this.txtRecord.ReadOnly = true;
+            this.txtRecord.Width = 91;
             // 
             // frm_resolver
             // 
@@ -339,11 +352,6 @@
         private System.Windows.Forms.DataGridView dgv_mailExchanger;
         private System.Windows.Forms.DataGridView dgv_nameServers;
         private System.Windows.Forms.Button btn_query;
-        private System.Windows.Forms.DataGridViewTextBoxColumn mailAddress;
-        private System.Windows.Forms.DataGridViewTextBoxColumn preference;
-        private System.Windows.Forms.DataGridViewTextBoxColumn mailExchanger;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Hostname;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IP;
         private System.Windows.Forms.DataGridViewTextBoxColumn host;
         private System.Windows.Forms.DataGridViewTextBoxColumn authoritativeNmeServer;
         private System.Windows.Forms.Label lbl_atRecord;
@@ -354,6 +362,12 @@
         internal System.Windows.Forms.TextBox txt_domainToQuery;
         private System.Windows.Forms.Label lbl_txtRecords;
         private System.Windows.Forms.DataGridView dgv_txtRecords;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Hostname;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TTL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mailAddress;
+        private System.Windows.Forms.DataGridViewTextBoxColumn preference;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mailExchanger;
         private System.Windows.Forms.DataGridViewTextBoxColumn txtDomain;
         private System.Windows.Forms.DataGridViewTextBoxColumn txtRecord;
     }
