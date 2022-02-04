@@ -91,16 +91,18 @@ namespace dnsResolver
 
                                 foreach (var aRecord in client.Query(domainToQuery, QueryType.A).Answers.ARecords())
                                 {
+                                    // A Records
                                     // MessageBox.Show(aRecord.TimeToLive.ToString());
                                     this.dgv_address.Rows.Add(new object[] { domainToQuery, aRecord.Address.ToString(), aRecord.TimeToLive });
                                 }
 
                                 foreach (var mxRecords in client.Query(domainToQuery, QueryType.MX).Answers.MxRecords())
                                 {
+                                    // MX Record
                                     // MessageBox.Show(mxRecords.ToString());
                                     string originalMXServer = mxRecords.Exchange;
                                     string dotlessMXServer = originalMXServer.TrimEnd('.');
-                                    this.dgv_mailExchanger.Rows.Add(new object[] { domainToQuery, mxRecords.Preference, dotlessMXServer });
+                                    this.dgv_mailExchanger.Rows.Add(new object[] { domainToQuery, mxRecords.Preference, dotlessMXServer, mxRecords.TimeToLive });
                                 }
 
                                 foreach (var txtRecords in client.Query(domainToQuery, QueryType.TXT).Answers.TxtRecords())
@@ -112,7 +114,7 @@ namespace dnsResolver
                                     string completeTxtRecord = txtRecords.ToString();
                                     string[] txtRecordArray = completeTxtRecord.Split('"');
 
-                                    this.dgv_txtRecords.Rows.Add(new object[] { dotlessTxtRecordDomain, txtRecordArray[1] });
+                                    this.dgv_txtRecords.Rows.Add(new object[] { dotlessTxtRecordDomain, txtRecordArray[1],txtRecords.TimeToLive });
                                 }
 
                                 foreach (var nameServers in client.Query(domainToQuery, QueryType.NS).Answers.NsRecords())

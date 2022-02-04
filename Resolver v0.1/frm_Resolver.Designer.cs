@@ -35,11 +35,12 @@
             this.dgv_address = new System.Windows.Forms.DataGridView();
             this.Hostname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.IP = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TTL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.arecordTTL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgv_mailExchanger = new System.Windows.Forms.DataGridView();
             this.mailAddress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.preference = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.mailExchanger = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.mxTTL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgv_nameServers = new System.Windows.Forms.DataGridView();
             this.host = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.authoritativeNmeServer = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,6 +54,7 @@
             this.dgv_txtRecords = new System.Windows.Forms.DataGridView();
             this.txtDomain = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtRecord = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.txtTTL = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_address)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_mailExchanger)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_nameServers)).BeginInit();
@@ -93,7 +95,7 @@
             this.dgv_address.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Hostname,
             this.IP,
-            this.TTL});
+            this.arecordTTL});
             this.dgv_address.Location = new System.Drawing.Point(12, 101);
             this.dgv_address.Name = "dgv_address";
             this.dgv_address.ReadOnly = true;
@@ -118,13 +120,13 @@
             this.IP.Name = "IP";
             this.IP.ReadOnly = true;
             // 
-            // TTL
+            // arecordTTL
             // 
-            this.TTL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.TTL.FillWeight = 39.67562F;
-            this.TTL.HeaderText = "TTL";
-            this.TTL.Name = "TTL";
-            this.TTL.ReadOnly = true;
+            this.arecordTTL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.arecordTTL.FillWeight = 39.67562F;
+            this.arecordTTL.HeaderText = "TTL";
+            this.arecordTTL.Name = "arecordTTL";
+            this.arecordTTL.ReadOnly = true;
             // 
             // dgv_mailExchanger
             // 
@@ -135,7 +137,8 @@
             this.dgv_mailExchanger.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.mailAddress,
             this.preference,
-            this.mailExchanger});
+            this.mailExchanger,
+            this.mxTTL});
             this.dgv_mailExchanger.Location = new System.Drawing.Point(12, 205);
             this.dgv_mailExchanger.Name = "dgv_mailExchanger";
             this.dgv_mailExchanger.ReadOnly = true;
@@ -167,6 +170,12 @@
             this.mailExchanger.HeaderText = "Mail Exchanger";
             this.mailExchanger.Name = "mailExchanger";
             this.mailExchanger.ReadOnly = true;
+            // 
+            // mxTTL
+            // 
+            this.mxTTL.HeaderText = "TTL";
+            this.mxTTL.Name = "mxTTL";
+            this.mxTTL.ReadOnly = true;
             // 
             // dgv_nameServers
             // 
@@ -283,7 +292,8 @@
             this.dgv_txtRecords.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgv_txtRecords.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.txtDomain,
-            this.txtRecord});
+            this.txtRecord,
+            this.txtTTL});
             this.dgv_txtRecords.Location = new System.Drawing.Point(12, 309);
             this.dgv_txtRecords.Name = "dgv_txtRecords";
             this.dgv_txtRecords.ReadOnly = true;
@@ -305,6 +315,12 @@
             this.txtRecord.Name = "txtRecord";
             this.txtRecord.ReadOnly = true;
             this.txtRecord.Width = 91;
+            // 
+            // txtTTL
+            // 
+            this.txtTTL.HeaderText = "TTL";
+            this.txtTTL.Name = "txtTTL";
+            this.txtTTL.ReadOnly = true;
             // 
             // frm_resolver
             // 
@@ -364,11 +380,13 @@
         private System.Windows.Forms.DataGridView dgv_txtRecords;
         private System.Windows.Forms.DataGridViewTextBoxColumn Hostname;
         private System.Windows.Forms.DataGridViewTextBoxColumn IP;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TTL;
+        private System.Windows.Forms.DataGridViewTextBoxColumn arecordTTL;
         private System.Windows.Forms.DataGridViewTextBoxColumn mailAddress;
         private System.Windows.Forms.DataGridViewTextBoxColumn preference;
         private System.Windows.Forms.DataGridViewTextBoxColumn mailExchanger;
+        private System.Windows.Forms.DataGridViewTextBoxColumn mxTTL;
         private System.Windows.Forms.DataGridViewTextBoxColumn txtDomain;
         private System.Windows.Forms.DataGridViewTextBoxColumn txtRecord;
+        private System.Windows.Forms.DataGridViewTextBoxColumn txtTTL;
     }
 }
