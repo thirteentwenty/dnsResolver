@@ -310,11 +310,10 @@
             // 
             // txtRecord
             // 
-            this.txtRecord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.txtRecord.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.txtRecord.HeaderText = "TXT Record";
             this.txtRecord.Name = "txtRecord";
             this.txtRecord.ReadOnly = true;
-            this.txtRecord.Width = 91;
             // 
             // txtTTL
             // 
